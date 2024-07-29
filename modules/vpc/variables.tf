@@ -14,3 +14,7 @@ variable "default_network_params" {
 variable "vpcs" {
   type = any
 }
+
+variable "peerings" {
+  type = any
+}

@@ -13,9 +13,8 @@ locals {
   ])
   subnets = { for index, subnet in local.flattened_subnets : subnet.name => subnet }
 
-  peerings_map = { for k, v in local.vpcs_definition["peerings"] : k => v }
   vpc_peerings = flatten([
-    for peering in local.peerings_map : [
+    for peering in var.peerings : [
       {
         vpc          = peering.vpc
         peer         = peering.peer

@@ -1,12 +1,11 @@
-module "vpcs" {
+module "network" {
   source = "./modules/vpc"
 
-  vpcs = local.vpcs
+  vpcs     = { for k, v in local.vpcs_definition["vpcs"] : v.name => v }
+  peerings = { for k, v in local.vpcs_definition["peerings"] : k => v }
 }
 
 locals {
-  definitions_dir      = "${path.module}/definitions"
-  vpcs_definition_file = file("${local.definitions_dir}/vpcs.yml")
-  vpcs_definition      = yamldecode(local.vpcs_definition_file)
-  vpcs                 = { for k, v in local.vpcs_definition["vpcs"] : v.name => v }
+  definitions_dir = "${path.module}/definitions"
+  vpcs_definition = yamldecode(file("${local.definitions_dir}/vpcs.yml"))
 }
