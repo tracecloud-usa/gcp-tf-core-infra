@@ -54,3 +54,5 @@ vpcs:
 peerings:
   - vpc: vpc-edge-trusted
     peer: vpc-app-prod
+  - vpc: vpc-edge-trusted
+    peer: vpc-edge-core-c2
