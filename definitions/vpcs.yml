@@ -1,0 +1,56 @@
+vpcs:
+  - name: vpc-edge-trusted
+    project: vpc-edge-prod-01
+    subnets:
+      - name: edge-trusted-subnet-01
+        region: us-east4
+        cidr_range: 100.100.1.0/27
+      - name: edge-trusted-subnet-02
+        region: us-central1
+        cidr_range: 100.100.2.0/27
+  - name: vpc-edge-untrusted
+    project: vpc-edge-prod-01
+    subnets:
+      - name: edge-untrusted-subnet-01
+        region: us-east4
+        cidr_range: 100.100.1.128/25
+      - name: edge-untrusted-subnet-02
+        region: us-central1
+        cidr_range: 100.100.2.128/25
+  - name: vpc-edge-ha2
+    project: vpc-edge-prod-01
+    subnets:
+      - name: edge-ha2-subnet-01
+        region: us-east4
+        cidr_range: 100.100.1.32/27
+      - name: edge-ha2-subnet-02
+        region: us-central1
+        cidr_range: 100.100.2.32/27
+  - name: vpc-edge-mgmt
+    project: vpc-edge-prod-01
+    subnets:
+      - name: edge-mgmt-subnet-01
+        region: us-east4
+        cidr_range: 100.100.1.64/27
+      - name: edge-mgmt-subnet-02
+        region: us-central1
+        cidr_range: 100.100.2.64/27
+  - name: vpc-edge-core-c2
+    project: vpc-edge-prod-01
+    subnets:
+      - name: core-c2-subnet-01
+        region: us-east4
+        cidr_range: 10.100.0.0/24
+  - name: vpc-app-prod
+    project: vpc-app-prod-01
+    subnets:
+      - name: app-prod-subnet-01
+        region: us-east4
+        cidr_range: 10.1.0.0/24
+      - name: app-prod-subnet-02
+        region: us-central1
+        cidr_range: 10.2.0.0/24
+
+peerings:
+  - vpc: vpc-edge-trusted
+    peer: vpc-app-prod
