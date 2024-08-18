@@ -1,0 +1,54 @@
+rules:
+  - name: allow-all-ssh-firewall-rule-1
+    action: allow
+    destination_ranges: null
+    direction: ingress
+    network: vpc-edge-untrusted
+    priority: 1000
+    project: vpc-edge-prod-01
+    rules:
+    - ports:
+      - 22
+      protocol: tcp
+    source_ranges:
+    - 0.0.0.0/0
+    source_tags: null
+    target_tags: 
+      - mgmt
+      - allow-all-ssh
+
+  - name: allow-firewall-ping-rule-1
+    action: allow
+    destination_ranges: null
+    direction: ingress
+    network: vpc-edge-untrusted
+    priority: 1000
+    project: vpc-edge-prod-01
+    rules:
+    - ports: null
+      protocol: icmp
+    source_ranges:
+    - 0.0.0.0/0
+    source_tags: null
+    target_tags: 
+      - mgmt
+      - allow-all-ping
+
+  - name: allow-gcp-lb-health-checks-1
+    action: allow
+    destination_ranges: null
+    direction: ingress
+    network: vpc-edge-untrusted
+    priority: 1000
+    project: vpc-edge-prod-01
+    rules:
+    - ports:
+      - 80
+      - 443
+      protocol: tcp
+    source_ranges:
+    - 35.191.0.0/16
+    - 130.211.0.0/22
+    target_tags: 
+      - mgmt
+      - health-checks
