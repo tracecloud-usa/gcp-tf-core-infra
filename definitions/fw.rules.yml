@@ -52,3 +52,20 @@ rules:
     target_tags: 
       - mgmt
       - health-checks
+  - name: allow-web-traffic-1
+    action: allow
+    destination_ranges: null
+    direction: ingress
+    network: vpc-edge-untrusted
+    priority: 1000
+    project: vpc-edge-prod-01
+    rules:
+    - ports:
+      - 80
+      - 443
+      protocol: tcp
+    source_ranges:
+    - 0.0.0.0/0
+    target_tags: 
+      - mgmt
+      - web
