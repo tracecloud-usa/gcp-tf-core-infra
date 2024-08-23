@@ -60,4 +60,3 @@ resource "google_compute_network_peering" "this" {
   network      = each.value.network
   peer_network = each.value.peer_network
 }
-
