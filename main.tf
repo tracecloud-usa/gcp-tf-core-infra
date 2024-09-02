@@ -9,9 +9,10 @@ locals {
   definitions_dir = "${path.module}/definitions"
   vpcs_definition = yamldecode(file("${local.definitions_dir}/vpcs.yml"))
 
-  routes  = yamldecode(file("${local.definitions_dir}/fw.routes.yml"))["routes"]
-  rules   = yamldecode(file("${local.definitions_dir}/fw.rules.yml"))["rules"]
-  secrets = yamldecode(file("${local.definitions_dir}/secrets.yml"))["secrets"]
+  routes                 = yamldecode(file("${local.definitions_dir}/fw.routes.yml"))["routes"]
+  rules                  = yamldecode(file("${local.definitions_dir}/fw.rules.yml"))["rules"]
+  secrets                = yamldecode(file("${local.definitions_dir}/secrets.yml"))["secrets"]
+  cloudflare_dns_records = yamldecode(file("${local.definitions_dir}/cloudflare.dns_records.yml"))["dns_records"]
 }
 
 module "firewall" {
@@ -31,4 +32,16 @@ module "secrets" {
   project = each.value.project
   region  = each.value.region
 
+}
+
+module "cloudflare_dns" {
+  source = "./modules/cloudflare"
+
+  for_each = { for k, v in local.cloudflare_dns_records : v.key => v }
+
+  name    = each.value.name
+  zone    = each.value.zone
+  type    = each.value.type
+  content = each.value.content
+  ttl     = each.value.ttl
 }

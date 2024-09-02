@@ -1,9 +1,13 @@
-module "secrets" {
-  source = "../modules/secrets"
+data "cloudflare_zone" "this" {
+  provider = cloudflare
+  name     = var.zone
+}
 
-  for_each = { for k, v in var.secrets : k => v }
-
-  name    = each.value.name
-  project = each.value.project
-  region  = var.region
+resource "cloudflare_record" "this" {
+  provider = cloudflare
+  zone_id  = data.cloudflare_zone.this.zone_id
+  name     = var.name
+  content  = var.content
+  type     = var.type
+  ttl      = var.ttl
 }
