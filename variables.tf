@@ -13,3 +13,23 @@ variable "cloudflare_secret" {
     project = "trace-terraform-perm"
   }
 }
+
+variable "billing_account" {
+  type = string
+}
+
+variable "perm_project" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
+variable "domain" {
+  type = string
+}
+
+variable "org_id" {
+  type = string
+}

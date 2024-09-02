@@ -12,7 +12,8 @@ locals {
   routes                 = yamldecode(file("${local.definitions_dir}/fw.routes.yml"))["routes"]
   rules                  = yamldecode(file("${local.definitions_dir}/fw.rules.yml"))["rules"]
   secrets                = yamldecode(file("${local.definitions_dir}/secrets.yml"))["secrets"]
-  cloudflare_dns_records = yamldecode(file("${local.definitions_dir}/cloudflare.dns_records.yml"))["dns_records"]
+  cloudflare_dns_records = yamldecode(file("${local.definitions_dir}/dns.cloudflare.yml"))["txt_records"]
+  cloud_dns_zones        = yamldecode(file("${local.definitions_dir}/dns.google.yml"))["zones"]
 }
 
 module "firewall" {
@@ -37,11 +38,43 @@ module "secrets" {
 module "cloudflare_dns" {
   source = "./modules/cloudflare"
 
-  for_each = { for k, v in local.cloudflare_dns_records : v.key => v }
-
-  name    = each.value.name
-  zone    = each.value.zone
-  type    = each.value.type
-  content = each.value.content
-  ttl     = each.value.ttl
+  for_each = local.combined_dns_records
+  name     = each.value.name
+  zone     = each.value.zone
+  type     = each.value.type
+  content  = each.value.content
+  ttl      = each.value.ttl
 }
+
+locals {
+  google_ns_records    = merge(local.nameservers["test"], local.nameservers["ai"])
+  cloudflare_dns       = { for k, v in local.cloudflare_dns_records : v.key => v }
+  combined_dns_records = merge(local.cloudflare_dns, local.google_ns_records)
+  trimmed_domain       = trimsuffix(var.domain, ".")
+  nameservers = merge(
+    { for k, v in module.cloud_dns : k => {
+      for index, value in v.nameservers : "${k}-nameserver-${index + 1}" => {
+        name    = k
+        ttl     = 1
+        type    = "NS"
+        zone    = local.trimmed_domain
+        content = trimsuffix(value, ".")
+      }
+      }
+    }
+  )
+}
+
+
+module "cloud_dns" {
+  source = "./modules/cloud_dns"
+
+  for_each = { for k, v in local.cloud_dns_zones : v.hostname => v }
+
+  domain     = trimsuffix(var.domain, ".us")
+  project    = var.perm_project
+  hostname   = each.value.hostname
+  visibility = each.value.visibility
+  dns_name   = each.value.dns_name
+}
+

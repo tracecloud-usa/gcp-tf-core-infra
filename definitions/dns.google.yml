@@ -1,0 +1,7 @@
+zones:
+  - hostname: ai
+    visibility: public
+    dns_name: ai.tracecloud.us.
+  - hostname: test
+    visibility: public
+    dns_name: test.tracecloud.us.

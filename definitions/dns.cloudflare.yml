@@ -1,0 +1,21 @@
+txt_records:
+  - name: "tracecloud.us"
+    content: "v=spf1 -all"
+    ttl: 1
+    type: "TXT"
+    zone: "tracecloud.us"
+    key: "email-security-root"
+
+  - name: "*._domainkey"
+    content: "v=DKIM1; p="
+    ttl: 1
+    type: "TXT"
+    zone: "tracecloud.us"
+    key: "email-security-domainkey"
+
+  - name: "_dmarc"
+    content: "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;"
+    ttl: 1
+    type: "TXT"
+    zone: "tracecloud.us"
+    key: "email-security-dmarc"
