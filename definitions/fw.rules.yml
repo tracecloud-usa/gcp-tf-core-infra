@@ -8,10 +8,10 @@ rules:
     project: vpc-edge-prod-01
     rules:
     - ports:
-      - 22
+        - 22
       protocol: tcp
     source_ranges:
-    - 0.0.0.0/0
+        - 67.191.89.205
     source_tags: null
     target_tags: 
       - mgmt
@@ -28,7 +28,7 @@ rules:
     - ports: null
       protocol: icmp
     source_ranges:
-    - 0.0.0.0/0
+      - 67.191.89.205
     source_tags: null
     target_tags: 
       - mgmt
@@ -43,12 +43,12 @@ rules:
     project: vpc-edge-prod-01
     rules:
     - ports:
-      - 80
-      - 443
+        - 80
+        - 443
       protocol: tcp
     source_ranges:
-    - 35.191.0.0/16
-    - 130.211.0.0/22
+      - 35.191.0.0/16
+      - 130.211.0.0/22
     target_tags: 
       - mgmt
       - health-checks
@@ -65,7 +65,7 @@ rules:
       - 443
       protocol: tcp
     source_ranges:
-    - 0.0.0.0/0
+      - 67.191.89.205
     target_tags: 
       - mgmt
       - web
