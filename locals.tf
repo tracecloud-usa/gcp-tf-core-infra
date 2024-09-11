@@ -1,4 +1,3 @@
-
 locals {
   definitions_dir = "${path.module}/definitions"
   vpcs_definition = yamldecode(file("${local.definitions_dir}/vpcs.yml"))

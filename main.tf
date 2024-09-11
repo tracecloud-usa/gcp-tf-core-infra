@@ -12,7 +12,6 @@ module "firewall" {
   firewall_routes = local.routes
 }
 
-
 module "secrets" {
   source = "./modules/secrets"
 
@@ -21,7 +20,6 @@ module "secrets" {
   name    = each.value.name
   project = each.value.project
   region  = each.value.region
-
 }
 
 module "cloudflare_dns" {
