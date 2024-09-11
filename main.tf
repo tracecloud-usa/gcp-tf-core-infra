@@ -39,11 +39,12 @@ module "cloudflare_dns" {
   source = "./modules/cloudflare"
 
   for_each = local.combined_dns_records
-  name     = each.value.name
-  zone     = each.value.zone
-  type     = each.value.type
-  content  = each.value.content
-  ttl      = each.value.ttl
+
+  name    = each.value.name
+  zone    = each.value.zone
+  type    = each.value.type
+  content = each.value.content
+  ttl     = each.value.ttl
 }
 
 locals {
@@ -51,6 +52,7 @@ locals {
   cloudflare_dns       = { for k, v in local.cloudflare_dns_records : v.key => v }
   combined_dns_records = merge(local.cloudflare_dns, local.google_ns_records)
   trimmed_domain       = trimsuffix(var.domain, ".")
+
   nameservers = merge(
     { for k, v in module.cloud_dns : k => {
       for index, value in v.nameservers : "${k}-nameserver-${index + 1}" => {
@@ -72,7 +74,7 @@ module "cloud_dns" {
   for_each = { for k, v in local.cloud_dns_zones : v.hostname => v }
 
   domain     = trimsuffix(var.domain, ".us")
-  project    = var.perm_project
+  project    = each.value.project
   hostname   = each.value.hostname
   visibility = each.value.visibility
   dns_name   = each.value.dns_name
