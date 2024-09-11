@@ -25,18 +25,3 @@ terraform {
     }
   }
 }
-
-provider "google" {
-}
-
-provider "google-beta" {
-}
-
-data "google_secret_manager_secret_version" "this" {
-  project = var.cloudflare_secret.project
-  secret  = var.cloudflare_secret.name
-}
-
-provider "cloudflare" {
-  api_token = data.google_secret_manager_secret_version.this.secret_data
-}
