@@ -46,15 +46,6 @@ module "cloud_dns" {
   dns_name   = each.value.dns_name
 }
 
-locals {
-  storage_buckets = [
-    {
-      name    = "ai-test-docs"
-      project = "product-app-prod-01"
-    }
-  ]
-}
-
 module "bucket" {
   source = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
 
@@ -62,28 +53,19 @@ module "bucket" {
 
   for_each = { for k, v in local.storage_buckets : v.name => v }
 
-  name       = "${each.key}-bucket"
+  name       = each.key
   project_id = each.value.project
-  location   = "us"
+  location   = each.value.location
 
-  lifecycle_rules = [{
-    action = {
-      type = "Delete"
-    }
-    condition = {
-      age            = 365
-      with_state     = "ANY"
-      matches_prefix = each.value.project
-    }
-  }]
+  lifecycle_rules = each.value.lifecycle_rules
 
   iam_members = [{
     role   = "roles/storage.objectViewer"
     member = "serviceAccount:${data.google_client_openid_userinfo.this.email}"
   }]
 
-  autoclass  = true
-  encryption = { default_kms_key_name = null }
+  autoclass  = each.value.autoclass
+  encryption = each.value.encryption
 }
 
 data "google_client_openid_userinfo" "this" {
