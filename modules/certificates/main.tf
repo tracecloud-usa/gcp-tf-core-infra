@@ -21,3 +21,7 @@ resource "google_certificate_manager_dns_authorization" "this" {
   description = "authorization for ${each.key} domain"
   domain      = each.key
 }
+
+output "dns_authz" {
+  value = { for domain, authorization in google_certificate_manager_dns_authorization.this : domain => authorization }
+}

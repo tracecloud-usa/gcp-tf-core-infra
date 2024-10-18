@@ -18,3 +18,7 @@ module "ssl_certificate_map" {
     location          = cert.location
   }]
 }
+
+output "dns_authz" {
+  value = { for k, v in module.ssl_certificate_map : k => v.dns_authz }
+}

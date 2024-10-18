@@ -27,3 +27,8 @@ module "ssl_certificate" {
 #   certificates = [google_certificate_manager_certificate.all.id]
 #   hostname     = "test.example.com"
 # }
+
+
+output "dns_authz" {
+  value = { for k, v in module.ssl_certificate : k => v.dns_authz }
+}
