@@ -1,0 +1,13 @@
+---
+certificate_maps:
+  - name: tracecloud-us-cert-map
+    project_id: product-app-prod-01
+    description: SSL Certificates for tracecloud.us
+    certificates:
+      - name: tracecloud-website-cert
+        location: global
+        domains: 
+          - test.tracecloud.us
+          - ai.tracecloud.us
+        description: initial test certificate for tracecloud.us hosts
+        dns_authorization: true

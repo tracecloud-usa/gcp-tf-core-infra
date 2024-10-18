@@ -8,6 +8,7 @@ locals {
   cloudflare_dns_records = yamldecode(file("${local.definitions_dir}/dns.cloudflare.yml"))["txt_records"]
   cloud_dns_zones        = yamldecode(file("${local.definitions_dir}/dns.google.yml"))["zones"]
   storage_buckets        = yamldecode(file("${local.definitions_dir}/buckets.yml"))["buckets"]
+  ssl_cert_maps          = yamldecode(file("${local.definitions_dir}/ssl_certs.yml"))["certificate_maps"]
 
   google_ns_records    = merge(local.nameservers["test"], local.nameservers["ai"])
   cloudflare_dns       = { for k, v in local.cloudflare_dns_records : v.key => v }

@@ -67,6 +67,3 @@ module "bucket" {
   autoclass  = each.value.autoclass
   encryption = each.value.encryption
 }
-
-data "google_client_openid_userinfo" "this" {
-}
