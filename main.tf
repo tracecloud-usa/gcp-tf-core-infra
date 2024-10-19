@@ -22,7 +22,7 @@ module "secrets" {
   region  = each.value.region
 }
 
-module "cloudflare_dns" {
+module "cloudflare_dns_records" {
   source = "./modules/cloudflare"
 
   for_each = local.combined_dns_records
@@ -32,6 +32,11 @@ module "cloudflare_dns" {
   type    = each.value.type
   content = each.value.content
   ttl     = each.value.ttl
+}
+
+moved {
+  from = module.cloudflare_dns
+  to   = module.cloudflare_dns_records
 }
 
 module "cloud_dns" {
