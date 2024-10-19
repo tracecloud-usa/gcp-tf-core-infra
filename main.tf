@@ -25,18 +25,17 @@ module "secrets" {
 module "cloudflare_dns_records" {
   source = "./modules/cloudflare"
 
-  for_each = local.combined_dns_records
+  for_each = merge(
+    local.cloudflare_dns,
+    local.google_ns_records,
+    local.dns_authorization_records
+  )
 
   name    = each.value.name
   zone    = each.value.zone
   type    = each.value.type
   content = each.value.content
   ttl     = each.value.ttl
-}
-
-moved {
-  from = module.cloudflare_dns
-  to   = module.cloudflare_dns_records
 }
 
 module "cloud_dns" {

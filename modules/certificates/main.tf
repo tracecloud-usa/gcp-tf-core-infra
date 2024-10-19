@@ -1,14 +1,3 @@
-locals {
-  dns_authorization_records = {
-    for domain, authorization in google_certificate_manager_dns_authorization.this : domain => {
-      record_name = authorization.dns_resource_record[0].name
-      record_type = authorization.dns_resource_record[0].type
-      record_data = authorization.dns_resource_record[0].data
-      record_ttl  = "60"
-    }
-  }
-}
-
 resource "google_certificate_manager_certificate" "this" {
   name        = var.ssl_certificate["name"]
   description = var.ssl_certificate["description"]
@@ -32,15 +21,3 @@ resource "google_certificate_manager_dns_authorization" "this" {
   description = "authorization for ${each.key} domain"
   domain      = each.key
 }
-
-# module "cloudflare_dns" {
-#   source = "./modules/cloudflare"
-
-#   for_each = local.combined_dns_records
-
-#   name    = each.value.name
-#   zone    = each.value.zone
-#   type    = each.value.type
-#   content = each.value.content
-#   ttl     = each.value.ttl
-# }
