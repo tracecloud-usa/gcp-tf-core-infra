@@ -8,6 +8,7 @@ locals {
   cloudflare_txt_records = yamldecode(file("${local.definitions_dir}/dns.cloudflare.yml"))["txt_records"]
   cloudflare_ns_records  = yamldecode(file("${local.definitions_dir}/dns.cloudflare.yml"))["ns_records"]
   cloud_dns_zones        = yamldecode(file("${local.definitions_dir}/dns.google.yml"))["zones"]
+  cloud_dns_records      = yamldecode(file("${local.definitions_dir}/dns.google.yml"))["records"]
   storage_buckets        = yamldecode(file("${local.definitions_dir}/buckets.yml"))["buckets"]
   ssl_cert_maps          = yamldecode(file("${local.definitions_dir}/ssl_certs.yml"))["certificate_maps"]
 

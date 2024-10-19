@@ -47,6 +47,13 @@ module "cloud_dns_zone" { # create a managed dns zone for each hostname
   hostname   = each.value.hostname
   visibility = each.value.visibility
   dns_name   = each.value.dns_name
+
+  dns_records = [for record in local.cloud_dns_records : {
+    name    = record.name
+    ttl     = record.ttl
+    type    = record.type
+    content = record.content
+  } if record.zone == each.key]
 }
 
 module "bucket" {
