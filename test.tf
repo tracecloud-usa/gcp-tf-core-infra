@@ -20,6 +20,6 @@ module "ssl_certificate_map" {
   }]
 }
 
-output "dns_authz" {
-  value = { for k, v in module.ssl_certificate_map : k => v.dns_authz }
+locals { # for each domain in a cert, output the dns authorization as dns record
+  dns_authorizations = flatten([for domain in module.ssl_certificate_map : domain.dns_authz])
 }

@@ -30,5 +30,5 @@ module "ssl_certificate" {
 
 
 output "dns_authz" {
-  value = { for certificates, certificate in module.ssl_certificate : certificates => certificate.dns_authz }
+  value = [for certificate in module.ssl_certificate : certificate.dns_authz]
 }
