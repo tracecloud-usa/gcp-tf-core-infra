@@ -27,6 +27,7 @@ locals {
 
   cloudflare_ns_record_params = { for k, v in local.cloudflare_ns_records : v.host => v }
 
+  # pull the nameserver records from the gcp managed dns zone if the hosts are listed in ns_records
   nameserver_records = [for host, zone in module.cloud_dns_zone : {
     for index, name_server in zone.nameservers : "${host}-nameserver-${index + 1}" => {
       name    = host
