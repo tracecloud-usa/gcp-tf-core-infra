@@ -12,15 +12,16 @@ locals {
   storage_buckets        = yamldecode(file("${local.definitions_dir}/buckets.yml"))["buckets"]
   ssl_cert_maps          = yamldecode(file("${local.definitions_dir}/ssl_certs.yml"))["certificate_maps"]
 
-  dns_authorizations = flatten([for domain in module.ssl_certificate_map : domain.dns_authz])
-  dns_authorization_records = { for dns_auth in local.dns_authorizations : dns_auth.domain_name => {
-    zone    = regex("^.*\\.([^.]+\\.[^.]+)$", dns_auth.domain_name)[0] # extract the tld from the fqdn
-    content = dns_auth.record_data
-    name    = dns_auth.record_name
-    ttl     = dns_auth.record_ttl
-    type    = dns_auth.record_type
-  } }
+  # dns_authorizations = flatten([for domain in module.ssl_certificate_map : domain.dns_authz])
+  # dns_authorization_records = { for dns_auth in local.dns_authorizations : dns_auth.domain_name => {
+  #   zone    = regex("^.*\\.([^.]+\\.[^.]+)$", dns_auth.domain_name)[0] # extract the tld from the fqdn
+  #   content = dns_auth.record_data
+  #   name    = dns_auth.record_name
+  #   ttl     = dns_auth.record_ttl
+  #   type    = dns_auth.record_type
+  # } }
 
+  edge_project = "vpc-edge-prod-01"
 
   cloudflare_dns = merge(
     { for k, v in local.cloudflare_txt_records : v.key => v },

@@ -1,35 +1,17 @@
-resource "google_certificate_manager_certificate" "this" {
-  name        = var.ssl_certificate["name"]
-  description = var.ssl_certificate["description"]
-  project     = var.ssl_certificate["project_id"]
-  location    = var.ssl_certificate["location"]
+data "google_dns_managed_zones" "this" {
+  project = var.dns_project
+}
 
-  managed {
-    domains = var.ssl_certificate["domains"]
-    dns_authorizations = [
-      for domain in var.ssl_certificate["domains"] : google_certificate_manager_dns_authorization.this[domain].id
-    ]
+data "google_dns_managed_zone" "this" {
+  for_each = toset(var.ssl_certificate["domains"])
+  name     = lookup(local.managed_zones, each.key, null)
+  project  = var.dns_project
+
+}
+
+locals {
+  managed_zones = {
+    for k, v in data.google_dns_managed_zones.this.managed_zones : trimsuffix(v.dns_name, ".") => v.name
   }
 }
 
-resource "google_certificate_manager_certificate_map_entry" "this" {
-  for_each = toset(var.ssl_certificate["domains"])
-
-  project      = var.ssl_certificate["project_id"]
-  name         = "${replace("${each.key}", ".", "-")}-cert-map-entry"
-  description  = null
-  map          = var.certificate_map
-  certificates = [google_certificate_manager_certificate.this.id]
-  hostname     = each.key
-}
-
-
-resource "google_certificate_manager_dns_authorization" "this" {
-  for_each = toset(var.ssl_certificate["domains"])
-
-  name        = "${replace("${each.key}", ".", "-")}-dns-auth"
-  project     = var.ssl_certificate["project_id"]
-  location    = try(var.ssl_certificate["location"], "global")
-  description = "authorization for ${each.key} domain"
-  domain      = each.key
-}

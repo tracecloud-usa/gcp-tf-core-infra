@@ -10,17 +10,15 @@ module "ssl_certificate_map" {
     certificates = each.value.certificates
   }
 
+  dns_project = local.edge_project # for creating dns records for the cert auths
+
   certificates = [for cert in each.value.certificates :
     {
-      name              = cert.name
-      domains           = cert.domains
-      description       = cert.description
-      dns_authorization = cert.dns_authorization
-      location          = cert.location
+      name                         = cert.name
+      domains                      = cert.domains
+      description                  = cert.description
+      dns_authorization            = cert.dns_authorization
+      location                     = cert.location
+      auto_create_dns_auth_records = cert.auto_create_dns_auth_records
   }]
-}
-
-
-output "dns_authz" {
-  value = { for k, v in module.ssl_certificate_map : k => v.dns_authz }
 }

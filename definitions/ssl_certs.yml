@@ -11,3 +11,4 @@ certificate_maps:
           - ai.tracecloud.us
         description: initial test certificate for tracecloud.us hosts
         dns_authorization: true
+        auto_create_dns_auth_records: true
