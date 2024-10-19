@@ -1,8 +1,7 @@
 module "ssl_certificate_map" {
   source = "./modules/certificate_map"
 
-  #   for_each = { for index, cert_map in local.ssl_cert_maps : cert_map.name => cert_map }
-  for_each = {}
+  for_each = { for index, cert_map in local.ssl_cert_maps : cert_map.name => cert_map }
 
   ssl_certificate_map = {
     name         = each.value.name
@@ -19,4 +18,9 @@ module "ssl_certificate_map" {
       dns_authorization = cert.dns_authorization
       location          = cert.location
   }]
+}
+
+
+output "dns_authz" {
+  value = { for k, v in module.ssl_certificate_map : k => v.dns_authz }
 }

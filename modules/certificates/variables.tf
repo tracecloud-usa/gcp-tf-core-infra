@@ -10,3 +10,7 @@ variable "ssl_certificate" {
   })
 
 }
+
+variable "certificate_map" {
+  type = string
+}

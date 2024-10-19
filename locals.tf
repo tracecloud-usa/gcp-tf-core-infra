@@ -5,7 +5,8 @@ locals {
   routes                 = yamldecode(file("${local.definitions_dir}/fw.routes.yml"))["routes"]
   rules                  = yamldecode(file("${local.definitions_dir}/fw.rules.yml"))["rules"]
   secrets                = yamldecode(file("${local.definitions_dir}/secrets.yml"))["secrets"]
-  cloudflare_dns_records = yamldecode(file("${local.definitions_dir}/dns.cloudflare.yml"))["txt_records"]
+  cloudflare_txt_records = yamldecode(file("${local.definitions_dir}/dns.cloudflare.yml"))["txt_records"]
+  cloudflare_ns_records  = yamldecode(file("${local.definitions_dir}/dns.cloudflare.yml"))["ns_records"]
   cloud_dns_zones        = yamldecode(file("${local.definitions_dir}/dns.google.yml"))["zones"]
   storage_buckets        = yamldecode(file("${local.definitions_dir}/buckets.yml"))["buckets"]
   ssl_cert_maps          = yamldecode(file("${local.definitions_dir}/ssl_certs.yml"))["certificate_maps"]
@@ -19,19 +20,26 @@ locals {
     type    = dns_auth.record_type
   } }
 
-  google_ns_records = merge(local.nameservers["test"], local.nameservers["ai"])
-  cloudflare_dns    = { for k, v in local.cloudflare_dns_records : v.key => v }
 
-  nameservers = merge(
-    { for k, v in module.cloud_dns : k => {
-      for index, value in v.nameservers : "${k}-nameserver-${index + 1}" => {
-        name    = k
-        ttl     = 1
-        type    = "NS"
-        zone    = trimsuffix(var.domain, ".")
-        content = trimsuffix(value, ".")
-      }
-      }
+  cloudflare_dns = merge(
+    { for k, v in local.cloudflare_txt_records : v.key => v },
+  )
+
+  cloudflare_ns_record_params = { for k, v in local.cloudflare_ns_records : v.host => v }
+
+  nameserver_records = [for host, zone in module.cloud_dns_zone : {
+    for index, name_server in zone.nameservers : "${host}-nameserver-${index + 1}" => {
+      name    = host
+      ttl     = lookup(local.cloudflare_ns_record_params[host], "ttl", 1)
+      type    = lookup(local.cloudflare_ns_record_params[host], "type", "NS")
+      zone    = trimsuffix(lookup(local.cloudflare_ns_record_params[host], "zone", var.domain), ".")
+      content = trimsuffix(name_server, ".")
     }
+    } if contains(keys(local.cloudflare_ns_record_params), host)
+  ]
+
+  google_ns_cloudflare_records = merge(
+    [for k, v in local.nameserver_records : v]...
   )
 }
+

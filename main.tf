@@ -27,8 +27,7 @@ module "cloudflare_dns_records" {
 
   for_each = merge(
     local.cloudflare_dns,
-    local.google_ns_records,
-    local.dns_authorization_records
+    local.google_ns_cloudflare_records,
   )
 
   name    = each.value.name
@@ -38,7 +37,7 @@ module "cloudflare_dns_records" {
   ttl     = each.value.ttl
 }
 
-module "cloud_dns" {
+module "cloud_dns_zone" { # create a managed dns zone for each hostname
   source = "./modules/cloud_dns"
 
   for_each = { for k, v in local.cloud_dns_zones : v.hostname => v }

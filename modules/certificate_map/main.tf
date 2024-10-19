@@ -9,6 +9,7 @@ module "ssl_certificate" {
 
   for_each = { for index, cert in var.certificates : cert.name => cert }
 
+  certificate_map = google_certificate_manager_certificate_map.this.name
   ssl_certificate = {
     name              = each.value.name
     domains           = each.value.domains
@@ -19,14 +20,6 @@ module "ssl_certificate" {
   }
 }
 
-# resource "google_certificate_manager_certificate_map_entry" "this" {
-#   project      = var.project_id
-#   name         = "certmgr-map-entry-web1"
-#   description  = "My test certificate map entry"
-#   map          = google_certificate_manager_certificate_map.certificate_map.name
-#   certificates = [google_certificate_manager_certificate.all.id]
-#   hostname     = "test.example.com"
-# }
 
 
 output "dns_authz" {

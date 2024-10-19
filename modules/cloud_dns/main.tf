@@ -5,27 +5,3 @@ resource "google_dns_managed_zone" "this" {
   visibility  = var.visibility
   project     = var.project
 }
-
-output "nameservers" {
-  value = google_dns_managed_zone.this.name_servers
-}
-
-variable "hostname" {
-  type = string
-}
-
-variable "visibility" {
-  type = string
-}
-
-variable "dns_name" {
-  type = string
-}
-
-variable "project" {
-  type = string
-}
-
-variable "domain" {
-  type = string
-}

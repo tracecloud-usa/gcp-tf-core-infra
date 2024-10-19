@@ -10,5 +10,6 @@ output "dns_authz" {
   ]
 }
 
-
-
+output "certificate_id" {
+  value = google_certificate_manager_certificate.this.id
+}

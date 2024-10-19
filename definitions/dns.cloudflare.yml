@@ -19,3 +19,13 @@ txt_records:
     type: "TXT"
     zone: "tracecloud.us"
     key: "email-security-dmarc"
+
+ns_records:
+  - host: ai
+    ttl: 1
+    type: NS
+    zone: tracecloud.us
+  - host: test
+    ttl: 1
+    type: NS
+    zone: tracecloud.us

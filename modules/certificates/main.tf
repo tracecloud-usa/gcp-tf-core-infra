@@ -12,6 +12,18 @@ resource "google_certificate_manager_certificate" "this" {
   }
 }
 
+resource "google_certificate_manager_certificate_map_entry" "this" {
+  for_each = toset(var.ssl_certificate["domains"])
+
+  project      = var.ssl_certificate["project_id"]
+  name         = "${replace("${each.key}", ".", "-")}-cert-map-entry"
+  description  = null
+  map          = var.certificate_map
+  certificates = [google_certificate_manager_certificate.this.id]
+  hostname     = each.key
+}
+
+
 resource "google_certificate_manager_dns_authorization" "this" {
   for_each = toset(var.ssl_certificate["domains"])
 
