@@ -10,8 +10,8 @@ zones:
     project: vpc-edge-prod-01
 
 records:
-  - name: test.tracecloud.us.
-    type: A
-    ttl: 1
-    content: 192.168.0.1
-    zone: test
+  # - name: test.tracecloud.us.
+  #   type: A
+  #   ttl: 1
+  #   content: 192.168.0.1
+  #   zone: test
