@@ -3,9 +3,9 @@ rules:
     action: allow
     destination_ranges: null
     direction: ingress
-    network: vpc-edge-untrusted
+    network: vpc-app-prod
     priority: 1000
-    project: vpc-edge-prod-01
+    project: vpc-app-prod-01
     rules:
     - ports:
         - 22
@@ -21,9 +21,9 @@ rules:
     action: allow
     destination_ranges: null
     direction: ingress
-    network: vpc-edge-untrusted
+    network: vpc-app-prod
     priority: 1000
-    project: vpc-edge-prod-01
+    project: vpc-app-prod-01
     rules:
     - ports: null
       protocol: icmp
@@ -38,9 +38,9 @@ rules:
     action: allow
     destination_ranges: null
     direction: ingress
-    network: vpc-edge-untrusted
+    network: vpc-app-prod
     priority: 1000
-    project: vpc-edge-prod-01
+    project: vpc-app-prod-01
     rules:
     - ports:
         - 80
@@ -56,9 +56,9 @@ rules:
     action: allow
     destination_ranges: null
     direction: ingress
-    network: vpc-edge-untrusted
+    network: vpc-app-prod
     priority: 1000
-    project: vpc-edge-prod-01
+    project: vpc-app-prod-01
     rules:
     - ports:
       - 80

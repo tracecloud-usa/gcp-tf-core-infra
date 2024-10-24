@@ -1,7 +1,7 @@
 routes:
   - dest_range: 0.0.0.0/0
-    name: fw-mgmt-default-inet-route-01
-    network: vpc-edge-untrusted
+    name: -default-inet-route-01
+    network: vpc-app-prod
     next_hop_gateway: default-internet-gateway
     priority: 0
-    project: vpc-edge-prod-01
+    project: vpc-app-prod-01

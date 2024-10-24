@@ -4,6 +4,10 @@ resource "google_certificate_manager_certificate_map" "this" {
   project     = var.ssl_certificate_map["project_id"]
 }
 
+output "cert_map" {
+  value = google_certificate_manager_certificate_map.this
+}
+
 module "ssl_certificate" {
   source = "../certificates"
 

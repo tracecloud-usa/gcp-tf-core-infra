@@ -1,24 +1,35 @@
-module "ssl_certificate_map" {
-  source = "./modules/certificate_map"
+# module "gce-lb-https" {
+#   source            = "terraform-google-modules/lb-http/google"
+#   version           = "~> 11.0"
+#   name              = "test-tracecloud-lb-https"
+#   project           = "product-app-prod-01"
+#   firewall_networks = [module.network.vpcs["vpc-app-prod"].self_link]
+#   create_url_map    = true
+#   ssl               = true
+#   certificate_map   = module.ssl_certificate_map["tracecloud-us-cert-map"].cert_map.id
 
-  for_each = { for index, cert_map in local.ssl_cert_maps : cert_map.name => cert_map }
+#   backends = {
+#     default = {
+#       protocol    = "HTTP"
+#       port        = 80
+#       port_name   = "http"
+#       timeout_sec = 10
+#       enable_cdn  = false
 
-  ssl_certificate_map = {
-    name         = each.value.name
-    project_id   = each.value.project_id
-    description  = each.value.description
-    certificates = each.value.certificates
-  }
+#       health_check = {
+#         request_path = "/"
+#         port         = 80
+#       }
 
-  dns_project = local.edge_project # for creating dns records for the cert auths
+#       log_config = {
+#         enable      = true
+#         sample_rate = 1.0
+#       }
 
-  certificates = [for cert in each.value.certificates :
-    {
-      name                         = cert.name
-      domains                      = cert.domains
-      description                  = cert.description
-      dns_authorization            = cert.dns_authorization
-      location                     = cert.location
-      auto_create_dns_auth_records = cert.auto_create_dns_auth_records
-  }]
-}
+#       groups = []
+#       iap_config = {
+#         enable = false
+#       }
+#     }
+#   }
+# }
