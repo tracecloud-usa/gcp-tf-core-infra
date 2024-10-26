@@ -13,5 +13,5 @@ records:
   - name: test.tracecloud.us.
     type: A
     ttl: 60
-    content: 34.8.53.134
+    content: 34.8.188.50
     zone: test
