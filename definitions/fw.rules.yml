@@ -11,7 +11,7 @@ rules:
         - 22
       protocol: tcp
     source_ranges:
-        - 67.191.89.205
+        - 76.128.151.41
     source_tags: null
     target_tags: 
       - mgmt
@@ -28,7 +28,7 @@ rules:
     - ports: null
       protocol: icmp
     source_ranges:
-      - 67.191.89.205
+      - 76.128.151.41
     source_tags: null
     target_tags: 
       - mgmt
@@ -65,7 +65,7 @@ rules:
       - 443
       protocol: tcp
     source_ranges:
-      - 67.191.89.205
+      - 76.128.151.41
     target_tags: 
       - mgmt
       - web

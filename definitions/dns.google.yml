@@ -9,9 +9,9 @@ zones:
     dns_name: test.tracecloud.us.
     project: vpc-edge-prod-01
 
-records: []
-  # - name: test.tracecloud.us.
-  #   type: A
-  #   ttl: 1
-  #   content: 192.168.0.1
-  #   zone: test
+records:
+  - name: test.tracecloud.us.
+    type: A
+    ttl: 60
+    content: 34.8.53.134
+    zone: test
