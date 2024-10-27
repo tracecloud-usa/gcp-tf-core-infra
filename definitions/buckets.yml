@@ -13,4 +13,17 @@ buckets:
           age: 365
           with_state: ANY
           matches_prefix: product-app-prod-01
+  - name: tracecloud-website-files-01
+    project: product-app-prod-01
+    location: us
+    autoclass: true 
+    encryption:
+      default_kms_key_name: null
+    lifecycle_rules:
+      - action:
+          type: Delete
+        condition:
+          age: 365
+          with_state: ANY
+          matches_prefix: product-app-prod-01
         
