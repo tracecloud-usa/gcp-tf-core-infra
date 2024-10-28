@@ -69,10 +69,15 @@ module "bucket" {
 
   lifecycle_rules = each.value.lifecycle_rules
 
-  iam_members = [{
+  iam_members = each.value.public ? [{
+    role   = "roles/storage.objectViewer"
+    member = "allUsers"
+    }] : [{ # self access
     role   = "roles/storage.objectViewer"
     member = "serviceAccount:${data.google_client_openid_userinfo.this.email}"
-  }]
+    },
+  ]
+  public_access_prevention = !each.value.public ? "enforced" : "inherited"
 
   autoclass  = each.value.autoclass
   encryption = each.value.encryption

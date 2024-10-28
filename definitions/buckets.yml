@@ -1,6 +1,7 @@
 ---
 buckets:
   - name: ai-test-docs-bucket-01
+    public: false
     project: product-app-prod-01
     location: us
     autoclass: true 
@@ -14,6 +15,7 @@ buckets:
           with_state: ANY
           matches_prefix: product-app-prod-01
   - name: tracecloud-website-files-01
+    public: true
     project: product-app-prod-01
     location: us
     autoclass: true 
